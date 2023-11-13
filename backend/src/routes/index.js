@@ -1,0 +1,5 @@
+export { default as UserRoutes } from "./users.routes.js"
+export { default as AuthRoutes } from "./auth.routes.js"
+export { default as ProductsRoutes } from "./products.routes.js"
+export { default as SearchRoutes } from "./search.routes.js"
+export { default as CategoryRoutes } from "./category.routes.js"
