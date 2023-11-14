@@ -15,12 +15,63 @@ const createUser = async (req = request, res = response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-              msg: "Talk to the administrator"
+            msg: "Talk to the administrator"
         })
     }
 }
 
+const getUsers = async (req, res) => {
+    const { limit = 5, from = 0 } = req.query;
+    const query = { state: true };
+
+    try {
+        const [total, users] = await Promise.all([
+            User.countDocuments(query),
+            User.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ])
+
+        res.json({
+            total,
+            users
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Talk to the administrator"
+        })
+    }
+}
+
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { _id, password, email, ...rest } = req.body;
+
+    if (password) {
+        const salt = bcrypt.genSaltSync();
+        rest.password = bcrypt.hashSync(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(id, rest, { new: true });
+    res.json({ user })
+}
+
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findByIdAndUpdate(id, { state: false });
+    const userAuth = req.userAuth;
+    res.json({
+        user,
+        userAuth
+    })
+}
+
+
 export {
-    createUser
+    createUser,
+    getUsers,
+    deleteUser,
+    updateUser
 }
 
