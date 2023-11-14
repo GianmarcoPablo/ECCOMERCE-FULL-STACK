@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button.disabled {
+    opacity: 0.6; /* Puedes ajustar la opacidad o estilos a tu preferencia */
+    cursor: not-allowed;
+    pointer-events: none;
+    /* Otros estilos que quieras aplicar */
+}
